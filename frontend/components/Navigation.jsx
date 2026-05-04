@@ -5,6 +5,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { useTheme } from 'next-themes'
+import { useEffect, useState } from 'react'
 import {
   Network,
   Compass,
@@ -25,20 +26,28 @@ const navItems = [
   { href: '/documents', label: 'Documents', icon: FileText },
 ]
 
+
+
 export default function Navigation() {
   const pathname = usePathname()
   const router = useRouter()
   const { theme, setTheme } = useTheme()
 
-  // safe token check (no SSR issue)
-  const token =
-    typeof window !== 'undefined' ? localStorage.getItem('token') : null
+  const [token, setToken] = useState(null)
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+    const storedToken = localStorage.getItem('token')
+    setToken(storedToken)
+  }, [])
 
   // HIDE NAVBAR ON AUTH PAGES
   const publicRoutes = ['/login', '/register']
   if (publicRoutes.includes(pathname)) return null
 
-  // logout handler
+  if (!mounted) return null   // 👈 IMPORTANT FIX
+
   const handleLogout = () => {
     localStorage.removeItem('token')
     router.push('/login')
