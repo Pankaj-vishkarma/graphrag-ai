@@ -76,7 +76,8 @@ htmlcov/
 # =========================
 staticfiles/
 media/
-documents/
+server/media/
+server/documents/
 
 # =========================
 # Python Build
