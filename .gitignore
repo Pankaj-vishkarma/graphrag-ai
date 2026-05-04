@@ -1,0 +1,99 @@
+# =========================
+# Python / Django (Backend)
+# =========================
+__pycache__/
+*.py[cod]
+*.sqlite3
+db.sqlite3
+*.log
+
+# Virtual environment
+venv/
+env/
+.venv/
+
+# Backend env files
+.env
+.env.*
+*.env
+
+# =========================
+# Node / Next.js (Frontend)
+# =========================
+node_modules/
+.next/
+out/
+build/
+
+# Next.js env files
+.env.local
+.env.development.local
+.env.production.local
+.env.test.local
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# =========================
+# ChromaDB / Vector DB
+# =========================
+chroma_db/
+chromadb/
+*.parquet
+
+# =========================
+# OS files
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# IDE / Editor
+# =========================
+.vscode/
+.idea/
+*.swp
+
+# =========================
+# Coverage / Testing
+# =========================
+coverage/
+*.coverage
+htmlcov/
+
+# =========================
+# Misc
+# =========================
+*.bak
+*.tmp
+*.cache
+
+# =========================
+# Django Production
+# =========================
+staticfiles/
+media/
+documents/
+
+# =========================
+# Python Build
+# =========================
+*.egg-info/
+dist/
+build/
+
+# =========================
+# PM2 / Logs
+# =========================
+.pm2/
+logs/
+*.pid
+
+# =========================
+# Misc
+# =========================
+*.lock
+*.seed
