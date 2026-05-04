@@ -16,24 +16,36 @@ async function fetchApi(endpoint, options = {}) {
     ...options,
   }
 
-  // Remove body for GET requests
   if (config.method === "GET") {
     delete config.body
   }
 
   const response = await fetch(url, config)
 
+  // Handle unauthorized
   if (response.status === 401) {
     localStorage.removeItem('token')
     window.location.href = '/login'
     return
   }
 
+  // Handle error responses
   if (!response.ok) {
-    const error = await response
-      .json()
-      .catch(() => ({ detail: "Request failed" }))
-    throw new Error(error.detail || `HTTP error ${response.status}`)
+    let errorData = {}
+
+    try {
+      errorData = await response.json()
+    } catch {
+      errorData = { message: "Request failed" }
+    }
+
+    const message =
+      errorData?.error ||
+      errorData?.detail ||
+      errorData?.message ||
+      `HTTP error ${response.status}`
+
+    throw new Error(message)
   }
 
   return response.json()
@@ -195,7 +207,7 @@ export async function checkHealth() {
 
 // REGISTER
 export async function registerUser(username, password) {
-  return fetchApi("/auth/register/", {
+  return await fetchApi("/auth/register/", {
     method: "POST",
     body: JSON.stringify({ username, password }),
   })
@@ -203,7 +215,7 @@ export async function registerUser(username, password) {
 
 // LOGIN
 export async function loginUser(username, password) {
-  return fetchApi("/auth/login/", {
+  return await fetchApi("/auth/login/", {
     method: "POST",
     body: JSON.stringify({ username, password }),
   })
