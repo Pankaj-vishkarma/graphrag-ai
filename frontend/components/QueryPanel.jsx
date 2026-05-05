@@ -55,7 +55,18 @@ export default function QueryPanel({ onQueryResult }) {
           break
       }
 
-      setQueryResult(result)
+      // FIX START
+      const normalizedResult = {
+        ...result,
+        graph_results: result.graph_results || result.graph_result || [],
+        vector_results: result.vector_results || result.vector_result || [],
+        hybrid_answer: result.hybrid_answer || "",
+        graph_result: result.graph_results || result.graph_result || [],
+        vector_result: result.vector_results || result.vector_result || []
+      }
+
+      setQueryResult(normalizedResult)
+      // FIX END
 
       if (result.entities && Array.isArray(result.entities)) {
         setHighlightedNodes(result.entities.map(e => e.id || e.name))

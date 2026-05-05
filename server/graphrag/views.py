@@ -326,9 +326,9 @@ def upload_document(request):
         return Response({"message": "Document processed", "document_id": doc.id})
 
     except Exception as e:
-        print("🔥 CRITICAL ERROR:", str(e))
+        print(" CRITICAL ERROR:", str(e))
 
-        if doc:  # 🔥 FIX 4: prevent "processing stuck"
+        if doc:  #  FIX 4: prevent "processing stuck"
             doc.status = "failed"
             doc.save()
 
@@ -352,14 +352,14 @@ def list_documents(request):
 @permission_classes([IsAuthenticated])
 def delete_document(request, doc_id):
     try:
-        # 🔹 Step 1: Get document
+        #  Step 1: Get document
         doc = Document.objects.get(id=doc_id, user=request.user)
 
-        # 🔹 Step 2: Extract document name/content identifier
+        #  Step 2: Extract document name/content identifier
         doc_name = doc.name
 
         # --------------------------
-        # 🔹 Step 3: DELETE FROM NEO4J
+        #  Step 3: DELETE FROM NEO4J
         # --------------------------
         try:
             from graphrag.services.neo4j_client import neo4j_client
@@ -380,7 +380,7 @@ def delete_document(request, doc_id):
             print("⚠ Neo4j cleanup failed:", str(e))
 
         # --------------------------
-        # 🔹 Step 4: DELETE FROM VECTOR DB (CHROMADB)
+        #  Step 4: DELETE FROM VECTOR DB (CHROMADB)
         # --------------------------
         try:
             from graphrag.services.vector_retriever import vector_store
@@ -394,7 +394,7 @@ def delete_document(request, doc_id):
             print("⚠ Vector DB cleanup failed:", str(e))
 
         # --------------------------
-        # 🔹 Step 5: DELETE FILE (OPTIONAL)
+        #  Step 5: DELETE FILE (OPTIONAL)
         # --------------------------
         try:
             if doc.file:
@@ -403,7 +403,7 @@ def delete_document(request, doc_id):
             print("⚠ File delete failed:", str(e))
 
         # --------------------------
-        # 🔹 Step 6: DELETE DB ENTRY
+        #  Step 6: DELETE DB ENTRY
         # --------------------------
         doc.delete()
 

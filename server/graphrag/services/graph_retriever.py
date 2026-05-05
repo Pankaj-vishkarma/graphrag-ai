@@ -44,13 +44,14 @@ def get_all_relationships(user_id=None):
 
 def find_entity_neighbors(entity_name: str, user_id=None):
     query = """
-    MATCH (a:Entity {name: $name})-[r]-(b:Entity)
+    MATCH (a:Entity)-[r]-(b:Entity)
+    WHERE toLower(a.name) CONTAINS toLower($name)
     """
 
     params = {"name": entity_name}
 
     if user_id:
-        query += "\nWHERE a.user_id = $user_id AND b.user_id = $user_id"
+        query += "\nAND a.user_id = $user_id AND b.user_id = $user_id"
         params["user_id"] = user_id
 
     query += """
@@ -58,6 +59,7 @@ def find_entity_neighbors(entity_name: str, user_id=None):
         a.name AS source,
         b.name AS target,
         type(r) AS relation
+    LIMIT 20
     """
 
     return neo4j_client.run_query(query, params)

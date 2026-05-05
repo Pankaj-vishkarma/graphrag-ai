@@ -69,7 +69,36 @@ export default function AnswerCard({ result, className = '' }) {
         <ScrollArea className="max-h-[250px] sm:max-h-[400px] pr-2 sm:pr-4">
           <div className="prose prose-sm dark:prose-invert max-w-none text-xs sm:text-sm">
             <ReactMarkdown>
-              {result.hybrid_answer || result.answer || result.response || 'No answer available'}
+              {
+                result.hybrid_answer ||
+                result.answer ||
+                result.response ||
+
+                // Graph fallback
+                (result.graph_results?.length > 0 &&
+                  result.graph_results
+                    .map((r) => `${r.source} ${r.relation} ${r.target}`)
+                    .join('\n')
+                ) ||
+
+                // Vector fallback (FINAL FIX)
+                (result.vector_results?.length > 0 &&
+                  result.vector_results
+                    .map((v) => {
+                      let text = Array.isArray(v) ? v[0] : (v.text || v.content || '')
+
+                      return text
+                        .replace(/\n+/g, '\n')        // fix line breaks
+                        .replace(/\s+/g, ' ')        // remove extra spaces
+                        .replace(/\b\d+\b$/, '')     // remove trailing numbers like "1"
+                        .trim()
+                    })
+                    .filter(Boolean)
+                    .join('\n\n')   // paragraph spacing
+                ) ||
+
+                'No answer available'
+              }
             </ReactMarkdown>
           </div>
 
