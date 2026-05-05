@@ -1,0 +1,41 @@
+{
+  "compilerOptions": {
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "target": "ES6",
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "react-jsx",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      "@/*": [
+        "./*"
+      ]
+    }
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts"
+, "components/ui/badge.jsx", "components/ui/button.jsx", "components/ui/card.jsx", "components/ui/collapsible.jsx", "components/ui/input.jsx", "components/ui/progress.jsx", "components/ui/scroll-area.jsx", "components/ui/separator.jsx", "components/ui/skeleton.jsx", "components/ui/sonner.jsx", "components/ui/tabs.jsx", "components/ui/textarea.jsx"  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
