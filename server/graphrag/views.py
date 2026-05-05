@@ -9,6 +9,7 @@ from pypdf import PdfReader
 from django.contrib.auth.models import User
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import permission_classes
+from rest_framework_simplejwt.tokens import RefreshToken
 
 from graphrag.models import Document, Query
 from graphrag.services.rag_chain import generate_answer
@@ -41,7 +42,16 @@ def register(request):
 
         user = User.objects.create_user(username=username, password=password)
 
-        return Response({"message": "User registered successfully"})
+        # Token generate
+        refresh = RefreshToken.for_user(user)
+
+        return Response(
+            {
+                "message": "User registered successfully",
+                "access": str(refresh.access_token),
+                "refresh": str(refresh),
+            }
+        )
 
     except Exception as e:
         return Response({"error": str(e)}, status=500)
